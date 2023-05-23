@@ -20,6 +20,20 @@ resource "aws_s3_object" "website_bucket" {
   content_type = "text/html"
 }
 
+resource "aws_s3_object" "website_bucket_logo" {
+  bucket       = aws_s3_bucket.website_bucket.id
+  key          = "coffee.png"
+  source       = "./coffee.png"
+  content_type = "image/x-png"
+}
+
+resource "aws_s3_object" "website_bucket_resume" {
+  bucket       = aws_s3_bucket.website_bucket.id
+  key          = "2023-Resume-StevenShine-compressed.pdf"
+  source       = "./2023-Resume-StevenShine-compressed.pdf"
+  content_type = "application/pdf"
+}
+
 resource "aws_cloudfront_distribution" "cdn_static_site" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -57,15 +71,8 @@ resource "aws_cloudfront_distribution" "cdn_static_site" {
     }
   }
 
-  aliases = [
-    var.domain_name_simple,
-    var.domain_name
-  ]
-
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.cert.arn
-    ssl_support_method       = "sni-only"
-    minimum_protocol_version = "TLSv1.2_2021"
+    cloudfront_default_certificate = true 
   }
 }
 
@@ -100,75 +107,4 @@ data "aws_iam_policy_document" "website_bucket" {
 resource "aws_s3_bucket_policy" "website_bucket_policy" {
   bucket = aws_s3_bucket.website_bucket.id
   policy = data.aws_iam_policy_document.website_bucket.json
-}
-
-variable "domain_name_simple" {
-  description = "Simple domain name"
-  type        = string
-  default     = "stevenshine.info"
-}
-
-resource "aws_acm_certificate" "cert" {
-  provider                  = aws.use_default_region
-  domain_name               = "*.${var.domain_name_simple}"
-  validation_method         = "DNS"
-  subject_alternative_names = [var.domain_name_simple]
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-data "aws_route53_zone" "zone" {
-  provider     = aws.use_default_region
-  name         = var.domain_name_simple
-  private_zone = false
-}
-
-resource "aws_route53_record" "cert_validation" {
-  provider = aws.use_default_region
-  for_each = {
-    for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      record = dvo.resource_record_value
-      type   = dvo.resource_record_type
-    }
-  }
-
-  allow_overwrite = true
-  name            = each.value.name
-  records         = [each.value.record]
-  type            = each.value.type
-  zone_id         = data.aws_route53_zone.zone.zone_id
-  ttl             = 60
-}
-
-resource "aws_acm_certificate_validation" "cert" {
-  provider                = aws.use_default_region
-  certificate_arn         = aws_acm_certificate.cert.arn
-  validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
-}
-
-resource "aws_route53_record" "www" {
-  zone_id = data.aws_route53_zone.zone.id
-  name    = "www.${var.domain_name_simple}"
-  type    = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.cdn_static_site.domain_name
-    zone_id                = aws_cloudfront_distribution.cdn_static_site.hosted_zone_id
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "apex" {
-  zone_id = data.aws_route53_zone.zone.id
-  name    = var.domain_name_simple
-  type    = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.cdn_static_site.domain_name
-    zone_id                = aws_cloudfront_distribution.cdn_static_site.hosted_zone_id
-    evaluate_target_health = false
-  }
 }
