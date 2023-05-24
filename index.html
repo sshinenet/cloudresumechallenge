@@ -1,76 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" style="color: white; font-family: 'Rubik', sans-serif; border: 10px; height: 100%; width: 100%; margin:0; padding:0; background: linear-gradient(45deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/ico" href="image/coffee-icon.ico" />
     <title>Steven Shine</title>
-    <style>
-        .div-mobile a {
-            display: none;
-        }
-
-        /* Change view when using mobile */
-        @media only screen and (max-width: 600px) {
-            html {
-                height: 100%;
-                width: 100%;
-            }
-
-            body {
-                background: rgb(131,58,180);
-                background: linear-gradient(45deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
-            }
-
-            .box {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 90px;
-                margin: 100px;
-                padding: 50px;
-            }
-
-            .box .connect {
-                display: none;
-            }
-
-            .div-mobile a {
-                display: inline-block;
-                color: white;
-                font-family: 'Rubik', sans-serif;
-                text-decoration: none;
-            }
-        }
-    </style>
 </head>
-<body style="height: 100%; width: 100%;">
-    <div class="container" style="display: flex; justify-content: space-around; flex-wrap: wrap; padding: 20px; font-size: 10px;">
-        <div class="logo" style="width: 30px; height: 30px; flex: 50%; padding: 5px;">
-            <img src="coffee.png" alt="coffee logo" style="width: 30px; height: 30px;">
-        </div>
-        <div class="Name" style="font-size: 10px;">
-            <h1 style="color: white; font-family: 'Rubik', sans-serif;">Steven Shine</h1>
-            <h1><a href="2023-Resume-StevenShine-compressed.pdf" style="color: white; text-decoration: none; font-family: 'Rubik', sans-serif;" target="_blank">Resume</a></h1>
-            <h1><a href="https://github.com/sshinenet" style="color: white; text-decoration: none; font-family: 'Rubik', sans-serif;" target="_blank">GitHub</a></h1>
-        </div>
-    </div>
-    <div class="box" style="display: flex; align-items: center; justify-content: center; font-size: 90px; margin: 100px; padding: 50px;">
-        <h1 class="connect"><a href="https://www.linkedin.com/in/stevenshine/" style="color: white; text-decoration: none; font-family: 'Rubik', sans-serif;" target="_blank">Let's connect</a></h1>
-        <div class="div-mobile">
-            <a href="https://www.linkedin.com/in/stevenshine/" style="color: white; text-decoration: none; font-family: 'Rubik', sans-serif;" target="_blank">Hi</a>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="image/coffee-logo.png" alt="coffee logo">
+        </div>    
+        <div class="Name">
+            <h1>Steven Shine</h1>
+            <h1><a href="2023-Resume-StevenShine-compressed.pdf" target="_blank">resume</h1>
+            <h1><a href="https://github.com/sshinenet" target="_blank">GitHub</h1>
+            <h1><a href="https://www.linkedin.com/in/stevenshine/" target="_blank">LinkedIn</h1>
         </div>
     </div>
-    <script>
-        // Check if the page is being viewed on a mobile device
-        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-        // Hide the regular "Let's connect" and show the mobile alternative "Hi" if the page is viewed on a mobile device
-        if (isMobile) {
-            document.querySelector('.connect').style.display = 'none';
-            document.querySelector('.div-mobile a').style.display = 'inline-block';
-        }
-    </script>
+        <div class="box">
+            <h1><a href="https://www.linkedin.com/in/stevenshine/" target="_blank">hello.</a></h1>
+            <div class="div-mobile">
+                <p>hi.</p>
+            </div>
+        </div>
+    <script src="main.js"></script>
 </body>
 </html>
-
