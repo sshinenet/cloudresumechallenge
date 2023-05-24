@@ -16,9 +16,9 @@ resource "aws_s3_bucket" "website_bucket" {
 }
 
 resource "aws_s3_account_public_access_block" "website_bucket" {
-  block_public_acls   = true
-  block_public_policy = true
-  ignore_public_acls = true
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
   restrict_public_buckets = true
 }
 
@@ -80,12 +80,12 @@ resource "aws_cloudfront_distribution" "cdn_static_site" {
     }
   }
 
-    viewer_certificate {
+  viewer_certificate {
     acm_certificate_arn      = aws_acm_certificate.cert.arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
-    
+
   aliases = [
     var.domain_name_simple,
     var.domain_name
@@ -93,7 +93,6 @@ resource "aws_cloudfront_distribution" "cdn_static_site" {
 }
 
 resource "aws_acm_certificate" "cert" {
-  provider                  = aws.use_default_region
   domain_name               = "*.${var.domain_name_simple}"
   validation_method         = "DNS"
   subject_alternative_names = [var.domain_name_simple]
@@ -104,13 +103,11 @@ resource "aws_acm_certificate" "cert" {
 }
 
 data "aws_route53_zone" "zone" {
-  provider     = aws.use_default_region
   name         = var.domain_name_simple
   private_zone = false
 }
 
 resource "aws_route53_record" "cert_validation" {
-  provider = aws.use_default_region
   for_each = {
     for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
@@ -128,7 +125,6 @@ resource "aws_route53_record" "cert_validation" {
 }
 
 resource "aws_acm_certificate_validation" "cert" {
-  provider                = aws.use_default_region
   certificate_arn         = aws_acm_certificate.cert.arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]
 }
