@@ -1,10 +1,10 @@
 variable "domain_name_simple" {
   type    = string
-  default = "whatever.com"
+  default = "stevenshine.info"
 }
 
 variable "domain_name" {
   type    = string
-  default = "noideawhatthisis"
+  default = "*.stevenshine.info"
 
 }

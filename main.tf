@@ -29,10 +29,10 @@ resource "aws_s3_object" "website_bucket" {
   content_type = "text/html"
 }
 
-resource "aws_s3_object" "website_bucket_logo" {
+resource "aws_s3_object" "website_bucket_coffeelogo" {
   bucket       = aws_s3_bucket.website_bucket.id
-  key          = "coffee.png"
-  source       = "./coffee.png"
+  key          = "image/coffee-logo.png"
+  source       = "./image/coffee-logo.png"
   content_type = "image/x-png"
 }
 
@@ -41,6 +41,27 @@ resource "aws_s3_object" "website_bucket_resume" {
   key          = "2023-Resume-StevenShine-compressed.pdf"
   source       = "./2023-Resume-StevenShine-compressed.pdf"
   content_type = "application/pdf"
+}
+
+resource "aws_s3_object" "website_bucket_coffeeicon" {
+  bucket       = aws_s3_bucket.website_bucket.id
+  key          = "image/coffee-icon.ico"
+  source       = "./image/coffee-icon.ico"
+  content_type = "image/ico"
+}
+
+resource "aws_s3_object" "website_bucket_stylecss" {
+  bucket       = aws_s3_bucket.website_bucket.id
+  key          = "style/style.css"
+  source       = "./style/style.css"
+  content_type = "text/css"
+}
+
+resource "aws_s3_object" "website_bucket_javascript" {
+  bucket       = aws_s3_bucket.website_bucket.id
+  key          = "main.js"
+  source       = "./main.js"
+  content_type = "text/javascript"
 }
 
 resource "aws_cloudfront_distribution" "cdn_static_site" {
